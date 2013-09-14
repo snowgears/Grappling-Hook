@@ -1,0 +1,24 @@
+# Thanks for downloading Grappling Hook! #
+# Please tell me what you think! #
+
+usePermissions: false
+
+# This is how many times grappling hooks can be used before they break #
+Uses:
+  wood: 5
+  stone: 10
+  iron: 20
+  gold: 25
+  diamond: 100
+
+# Setting this to true will use teleporting instead of velocity #
+teleportToHook: false
+
+# If this is true, players will not be able to craft grappling hooks #
+disableCrafting: false
+
+# If this is true, players will take fall damage with grappling hooks #
+fallDamageWithHook: false
+
+# This is how much time (in seconds) players must wait between grapples #
+timeBetweenGrapples: 0

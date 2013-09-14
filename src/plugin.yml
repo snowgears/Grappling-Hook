@@ -1,0 +1,46 @@
+name: GrapplingHook
+author: Tanner Embry
+description: A simple grappling hook plugin.
+version: 1.5.6
+main: com.snowgears.grapplinghook.GrapplingHook
+permissions:
+    grapplinghook.pull.self:
+        description: Allows player to pull themselves to a location
+        default: op
+    grapplinghook.pull.mobs:
+        description: Allows player to pull mobs with the hook
+        default: op
+    grapplinghook.pull.players:
+        description: Allows player to pull players with the hook
+        default: op
+    grapplinghook.pull.items:
+        description: Allows player to pull items with the hook
+        default: op
+    grapplinghook.craft.wood:
+        description: Allows player to craft wood grappling hooks
+        default: op
+    grapplinghook.craft.stone:
+        description: Allows player to craft stone grappling hooks
+        default: op
+    grapplinghook.craft.iron:
+        description: Allows player to craft iron grappling hooks
+        default: op
+    grapplinghook.craft.gold:
+        description: Allows player to craft gold grappling hooks
+        default: op
+    grapplinghook.craft.diamond:
+        description: Allows player to craft diamond grappling hooks
+        default: op
+    grapplinghook.command.give:
+        description: Allows player to use command /gh give
+        default: op
+    grapplinghook.player.nopull:
+        description: Player can not be pulled by other players
+        default: op
+    grapplinghook.player.nocooldown:
+        description: Player ignores grapple cooldown
+        default: op
+commands:
+   gh:
+      description: GH GIVE gives a grappling hook.
+      usage: /<command>
