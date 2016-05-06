@@ -39,12 +39,12 @@ public class GrapplingHook extends JavaPlugin{
 		plugin = this;
 		getServer().getPluginManager().registerEvents(alisten, this);
 		
-		try {
-		    Metrics metrics = new Metrics(this);
-		    metrics.start();
-		} catch (IOException e) {
-		    // Failed to submit the stats
-		}
+		 try {
+		     Metrics metrics = new Metrics(this);
+		     metrics.start();
+		 } catch (IOException e) {
+		     // Failed to submit the stats
+		 }
 		
 		File configFile = new File(this.getDataFolder() + "/config.yml");
 

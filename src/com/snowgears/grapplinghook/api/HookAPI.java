@@ -90,7 +90,7 @@ public final class HookAPI {
 //		System.out.println(uses);
 		if(isInteger(uses) == false){
 			player.setItemInHand(new ItemStack(Material.AIR));
-			player.getWorld().playSound(player.getLocation(), Sound.ITEM_BREAK, 10f, 1f);
+			player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 10f, 1f);
 			return false;
 		}
 		else{
@@ -99,7 +99,7 @@ public final class HookAPI {
 			
 			if(currentUses == 0){ //hook has reached maximum uses
 				player.setItemInHand(new ItemStack(Material.AIR));
-				player.getWorld().playSound(player.getLocation(), Sound.ITEM_BREAK, 10f, 1f);
+				player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 10f, 1f);
 				return false;
 			}
 			else{
@@ -113,7 +113,7 @@ public final class HookAPI {
 	}
 	
 	public static void playGrappleSound(Location loc) {
-		loc.getWorld().playSound(loc, Sound.MAGMACUBE_JUMP, 10f, 1f);
+		loc.getWorld().playSound(loc, Sound.ENTITY_MAGMACUBE_JUMP, 10f, 1f);
 	}
 	
     private static boolean isInteger(String s) {
