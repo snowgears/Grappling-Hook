@@ -135,7 +135,7 @@ public class GrapplingListener implements Listener{
 	        	player.teleport(loc);
 	    	}
 	    	else{
-	    		if(player.getLocation().distance(loc) < 3) //hook is too close to player
+	    		if(player.getLocation().distance(loc) < 6) //hook is too close to player
 	    			pullPlayerSlightly(player, loc);
 	    		else
 	    			pullEntityToLocation(player, loc);
@@ -169,7 +169,7 @@ public class GrapplingListener implements Listener{
         if(HookAPI.isGrapplingHook(player.getItemInHand()) == false)
         	return;
 
-		if(event.getState() == org.bukkit.event.player.PlayerFishEvent.State.IN_GROUND){
+		if(event.getState() == org.bukkit.event.player.PlayerFishEvent.State.IN_GROUND  || event.getState() == org.bukkit.event.player.PlayerFishEvent.State.FAILED_ATTEMPT){
 
         	Location loc = event.getHook().getLocation();
 
