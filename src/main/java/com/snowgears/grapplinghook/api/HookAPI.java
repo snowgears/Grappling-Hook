@@ -16,6 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.snowgears.grapplinghook.GrapplingHook;
 
 public final class HookAPI {
+	public static GrapplingHook plugin;
 	
 	public static boolean isGrapplingHook(ItemStack is) {
 		ItemMeta im = is.getItemMeta();
@@ -47,27 +48,27 @@ public final class HookAPI {
 	}
 	
 	public static boolean playerOnCooldown(Player player) {
-		if(GrapplingHook.plugin.alisten.noGrapplePlayers.containsKey(player.getName()))
+		if(plugin.listener.noGrapplePlayers.containsKey(player.getName()))
 			 return true;
 		return false;
 	}
 	
 	public static void removePlayerCooldown(Player player) {
-		if(GrapplingHook.plugin.alisten.noGrapplePlayers.containsKey(player.getName()))
-			GrapplingHook.plugin.alisten.noGrapplePlayers.remove(player.getName());
+		if(plugin.listener.noGrapplePlayers.containsKey(player.getName()))
+			plugin.listener.noGrapplePlayers.remove(player.getName());
 	}
 	
 	public static void addPlayerCooldown(final Player player, int seconds) {
-		if(GrapplingHook.plugin.alisten.noGrapplePlayers.containsKey(player.getName()))
-			Bukkit.getServer().getScheduler().cancelTask(GrapplingHook.plugin.alisten.noGrapplePlayers.get(player.getName()));
+		if(plugin.listener.noGrapplePlayers.containsKey(player.getName()))
+			Bukkit.getServer().getScheduler().cancelTask(plugin.listener.noGrapplePlayers.get(player.getName()));
 		
-		int taskId = GrapplingHook.plugin.getServer().getScheduler().scheduleSyncDelayedTask(GrapplingHook.plugin,new Runnable() {
+		int taskId = plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			  public void run(){
 				 removePlayerCooldown(player);
 			  }
 	  	}, (seconds*20));
-		
-		GrapplingHook.plugin.alisten.noGrapplePlayers.put(player.getName(), taskId);
+
+		plugin.listener.noGrapplePlayers.put(player.getName(), taskId);
 	}
 	
 	public static void setUses(ItemStack is, int uses) {
@@ -89,7 +90,7 @@ public final class HookAPI {
 
 //		System.out.println(uses);
 		if(isInteger(uses) == false){
-			player.setItemInHand(new ItemStack(Material.AIR));
+			player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
 			player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 10f, 1f);
 			return false;
 		}
@@ -98,7 +99,7 @@ public final class HookAPI {
 			currentUses--;
 			
 			if(currentUses == 0){ //hook has reached maximum uses
-				player.setItemInHand(new ItemStack(Material.AIR));
+				player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
 				player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 10f, 1f);
 				return false;
 			}
@@ -113,7 +114,7 @@ public final class HookAPI {
 	}
 	
 	public static void playGrappleSound(Location loc) {
-		loc.getWorld().playSound(loc, Sound.ENTITY_MAGMACUBE_JUMP, 10f, 1f);
+		loc.getWorld().playSound(loc, Sound.ENTITY_MAGMA_CUBE_JUMP, 10f, 1f);
 	}
 	
     private static boolean isInteger(String s) {
