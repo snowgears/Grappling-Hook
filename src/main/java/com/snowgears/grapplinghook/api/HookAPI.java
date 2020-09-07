@@ -1,19 +1,13 @@
 package com.snowgears.grapplinghook.api;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import com.snowgears.grapplinghook.GrapplingHook;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.snowgears.grapplinghook.GrapplingHook;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class HookAPI {
 	
@@ -87,7 +81,6 @@ public final class HookAPI {
 		String usesLine = im.getLore().get(0);
 		String uses = usesLine.substring(usesLine.indexOf("a")+1, usesLine.length());
 
-//		System.out.println(uses);
 		if(isInteger(uses) == false){
 			player.setItemInHand(new ItemStack(Material.AIR));
 			player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 10f, 1f);
@@ -113,7 +106,7 @@ public final class HookAPI {
 	}
 	
 	public static void playGrappleSound(Location loc) {
-		loc.getWorld().playSound(loc, Sound.ENTITY_MAGMACUBE_JUMP, 10f, 1f);
+		loc.getWorld().playSound(loc, Sound.ENTITY_MAGMA_CUBE_JUMP, 10f, 1f);
 	}
 	
     private static boolean isInteger(String s) {

@@ -1,12 +1,11 @@
 package com.snowgears.grapplinghook;
 
-
-import java.io.File;
-import java.io.IOException;
-
+import com.snowgears.grapplinghook.api.HookAPI;
+import com.snowgears.grapplinghook.utils.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,9 +13,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.snowgears.grapplinghook.api.HookAPI;
-import com.snowgears.grapplinghook.utils.Metrics;
-
+import java.io.File;
+import java.io.IOException;
 
 public class GrapplingHook extends JavaPlugin{
 	
@@ -67,10 +65,13 @@ public class GrapplingHook extends JavaPlugin{
 		timeBetweenUses = getConfig().getInt("timeBetweenGrapples"); 
 
 		if(disableCrafting == false){
-			ShapedRecipe woodRecipe = new ShapedRecipe(HookAPI.createGrapplingHook(woodUses))
-			.shape(" **", " &*", "   ")
-			.setIngredient('*', Material.WOOD, -1)
-			.setIngredient('&', Material.FISHING_ROD);
+			for(Material plankMaterial : Tag.PLANKS.getValues()) {
+				ShapedRecipe woodRecipe = new ShapedRecipe(HookAPI.createGrapplingHook(woodUses))
+						.shape(" **", " &*", "   ")
+						.setIngredient('*', plankMaterial)
+						.setIngredient('&', Material.FISHING_ROD);
+				getServer().addRecipe(woodRecipe);
+			}
 			
 			ShapedRecipe stoneRecipe = new ShapedRecipe(HookAPI.createGrapplingHook(stoneUses))
 			.shape(" **", " &*", "   ")
@@ -91,8 +92,7 @@ public class GrapplingHook extends JavaPlugin{
 			.shape(" **", " &*", "   ")
 			.setIngredient('*', Material.DIAMOND)
 			.setIngredient('&', Material.FISHING_ROD);
-			
-			getServer().addRecipe(woodRecipe);
+
 			getServer().addRecipe(stoneRecipe);
 			getServer().addRecipe(ironRecipe);
 			getServer().addRecipe(goldRecipe);

@@ -1,13 +1,9 @@
 package com.snowgears.grapplinghook;
 
-import java.util.HashMap;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import com.snowgears.grapplinghook.api.HookAPI;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Fish;
+import org.bukkit.entity.FishHook;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,12 +13,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import com.snowgears.grapplinghook.api.HookAPI;
+import java.util.HashMap;
 
 
 public class GrapplingListener implements Listener{
@@ -43,11 +38,15 @@ public class GrapplingListener implements Listener{
 		if(event.getView().getPlayer() instanceof Player){
 			Player player = (Player)event.getView().getPlayer();
 			if(HookAPI.isGrapplingHook(event.getInventory().getResult())){
-				if(event.getInventory().contains(Material.WOOD, -1)){
-					if(!player.hasPermission("grapplinghook.craft.wood"))
-						event.setCancelled(true);
+				for(ItemStack is : event.getInventory().getContents()){
+					if(Tag.PLANKS.isTagged(is.getType())){
+						if(!player.hasPermission("grapplinghook.craft.wood")) {
+							event.setCancelled(true);
+							return;
+						}
+					}
 				}
-				else if(event.getInventory().contains(Material.COBBLESTONE)){
+				if(event.getInventory().contains(Material.COBBLESTONE)){
 					if(!player.hasPermission("grapplinghook.craft.stone"))
 						event.setCancelled(true);
 				}
@@ -70,8 +69,8 @@ public class GrapplingListener implements Listener{
     @EventHandler
     public void onAttack(EntityDamageByEntityEvent event){
     	
-    		if(event.getDamager() instanceof Fish){
-    		Fish hook = (Fish)event.getDamager();
+    		if(event.getDamager() instanceof FishHook){
+    		FishHook hook = (FishHook)event.getDamager();
     		if( ! (hook.getShooter() instanceof Player))
     			return;
     		Player player = (Player)hook.getShooter();

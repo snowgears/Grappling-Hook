@@ -1,7 +1,7 @@
 name: GrapplingHook
 author: Tanner Embry
 description: A simple grappling hook plugin.
-version: 1.5.7
+version: 1.5.9
 main: com.snowgears.grapplinghook.GrapplingHook
 permissions:
     grapplinghook.pull.self:
