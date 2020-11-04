@@ -334,10 +334,8 @@ public class GrapplingListener implements Listener {
         if (noFallEntities.containsKey(e.getEntityId()))
             Bukkit.getServer().getScheduler().cancelTask(noFallEntities.get(e.getEntityId()));
 
-        int taskId = plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-            if (noFallEntities.containsKey(e.getEntityId()))
-                noFallEntities.remove(e.getEntityId());
-        }, ticks);
+        int taskId = plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin,
+            () -> noFallEntities.remove(e.getEntityId()), ticks);
 
         noFallEntities.put(e.getEntityId(), taskId);
     }

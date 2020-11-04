@@ -19,10 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class GrapplingHook extends JavaPlugin {
 
-    public final GrapplingListener alisten = new GrapplingListener(this);
     public static GrapplingHook plugin;
-    protected FileConfiguration config;
-
     public static boolean usePerms = false;
     public static boolean teleportHooked = false;
     public static boolean fallDamage = false;
@@ -33,6 +30,8 @@ public class GrapplingHook extends JavaPlugin {
     public static int goldUses = 0;
     public static int diamondUses = 0;
     public static int timeBetweenUses = 0;
+    public final GrapplingListener alisten = new GrapplingListener(this);
+    protected FileConfiguration config;
 
     public void onEnable() {
         plugin = this;

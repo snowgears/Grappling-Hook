@@ -36,7 +36,7 @@ public final class HookAPI {
     public static int getUses(ItemStack is) {
         ItemMeta im = is.getItemMeta();
         String usesLine = im.getLore().get(0);
-        String uses = usesLine.substring(usesLine.indexOf("a") + 1, usesLine.length());
+        String uses = usesLine.substring(usesLine.indexOf("a") + 1);
 
         if (isInteger(uses)) {
             return Integer.parseInt(uses);
@@ -46,26 +46,23 @@ public final class HookAPI {
     }
 
     public static boolean playerOnCooldown(Player player) {
-        if (GrapplingHook.plugin.alisten.noGrapplePlayers.containsKey(player.getName()))
-            return true;
-        return false;
+        return GrapplingHook.plugin.alisten.noGrapplePlayers.containsKey(player.getName());
     }
 
     public static void removePlayerCooldown(Player player) {
-        if (GrapplingHook.plugin.alisten.noGrapplePlayers.containsKey(player.getName()))
-            GrapplingHook.plugin.alisten.noGrapplePlayers.remove(player.getName());
+        GrapplingHook.plugin.alisten.noGrapplePlayers.remove(player.getName());
     }
 
     public static void addPlayerCooldown(final Player player, int seconds) {
         if (GrapplingHook.plugin.alisten.noGrapplePlayers.containsKey(player.getName())) {
-			Bukkit.getServer().getScheduler().cancelTask(GrapplingHook.plugin.alisten.noGrapplePlayers.get(player.getName()));
-		}
+            Bukkit.getServer().getScheduler().cancelTask(GrapplingHook.plugin.alisten.noGrapplePlayers.get(player.getName()));
+        }
         int taskId = GrapplingHook.plugin.getServer().getScheduler().scheduleSyncDelayedTask(GrapplingHook.plugin,
-			new Runnable() {
-            public void run() {
-                removePlayerCooldown(player);
-            }
-        }, (seconds * 20));
+            new Runnable() {
+                public void run() {
+                    removePlayerCooldown(player);
+                }
+            }, (seconds * 20));
 
         GrapplingHook.plugin.alisten.noGrapplePlayers.put(player.getName(), taskId);
     }
@@ -82,11 +79,11 @@ public final class HookAPI {
 
     public static boolean addUse(Player player, ItemStack hook) {
         if (player.getGameMode() == GameMode.CREATIVE) {
-			return true;
-		}
+            return true;
+        }
         ItemMeta im = hook.getItemMeta();
         String usesLine = im.getLore().get(0);
-        String uses = usesLine.substring(usesLine.indexOf("a") + 1, usesLine.length());
+        String uses = usesLine.substring(usesLine.indexOf("a") + 1);
 
         if (!isInteger(uses)) {
             player.setItemInHand(new ItemStack(Material.AIR));
