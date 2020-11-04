@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Tag;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -64,29 +65,34 @@ public class GrapplingHook extends JavaPlugin {
 
         if (disableCrafting == false) {
             for (Material plankMaterial : Tag.PLANKS.getValues()) {
-                ShapedRecipe woodRecipe = new ShapedRecipe(HookAPI.createGrapplingHook(woodUses))
+                ShapedRecipe woodRecipe = new ShapedRecipe(NamespacedKey.randomKey(),
+                    HookAPI.createGrapplingHook(woodUses)
+                )
                     .shape(" **", " &*", "   ")
                     .setIngredient('*', plankMaterial)
                     .setIngredient('&', Material.FISHING_ROD);
                 getServer().addRecipe(woodRecipe);
             }
 
-            ShapedRecipe stoneRecipe = new ShapedRecipe(HookAPI.createGrapplingHook(stoneUses))
+            ShapedRecipe stoneRecipe = new ShapedRecipe(NamespacedKey.randomKey(),
+                HookAPI.createGrapplingHook(stoneUses))
                 .shape(" **", " &*", "   ")
                 .setIngredient('*', Material.COBBLESTONE)
                 .setIngredient('&', Material.FISHING_ROD);
 
-            ShapedRecipe ironRecipe = new ShapedRecipe(HookAPI.createGrapplingHook(ironUses))
+            ShapedRecipe ironRecipe = new ShapedRecipe(NamespacedKey.randomKey(), HookAPI.createGrapplingHook(ironUses))
                 .shape(" **", " &*", "   ")
                 .setIngredient('*', Material.IRON_INGOT)
                 .setIngredient('&', Material.FISHING_ROD);
 
-            ShapedRecipe goldRecipe = new ShapedRecipe(HookAPI.createGrapplingHook(goldUses))
+            ShapedRecipe goldRecipe = new ShapedRecipe(NamespacedKey.randomKey(), HookAPI.createGrapplingHook(goldUses))
                 .shape(" **", " &*", "   ")
                 .setIngredient('*', Material.GOLD_INGOT)
                 .setIngredient('&', Material.FISHING_ROD);
 
-            ShapedRecipe diamondRecipe = new ShapedRecipe(HookAPI.createGrapplingHook(diamondUses))
+            ShapedRecipe diamondRecipe = new ShapedRecipe(NamespacedKey.randomKey(),
+                HookAPI.createGrapplingHook(diamondUses)
+            )
                 .shape(" **", " &*", "   ")
                 .setIngredient('*', Material.DIAMOND)
                 .setIngredient('&', Material.FISHING_ROD);
