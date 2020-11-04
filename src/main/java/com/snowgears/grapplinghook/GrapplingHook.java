@@ -4,6 +4,7 @@ import com.snowgears.grapplinghook.api.HookAPI;
 import com.snowgears.grapplinghook.utils.Metrics;
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -65,9 +66,10 @@ public class GrapplingHook extends JavaPlugin {
 
         if (!disableCrafting) {
             for (Material plankMaterial : Tag.PLANKS.getValues()) {
-                ShapedRecipe woodRecipe = new ShapedRecipe(new NamespacedKey(this, "wood_grappling_hook_recipe"),
-                    HookAPI.createGrapplingHook(woodUses)
-                )
+                ShapedRecipe woodRecipe = new ShapedRecipe(new NamespacedKey(this,
+                    plankMaterial.getKey().toString().toLowerCase(Locale.ROOT).replace(":", "_")
+                        + "_grappling_hook_recipe"
+                ), HookAPI.createGrapplingHook(woodUses))
                     .shape(" **", " &*", "   ")
                     .setIngredient('*', plankMaterial)
                     .setIngredient('&', Material.FISHING_ROD);
