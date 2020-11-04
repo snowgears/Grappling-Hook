@@ -66,8 +66,7 @@ public class GrapplingHook extends JavaPlugin {
         if (!disableCrafting) {
             for (Material plankMaterial : Tag.PLANKS.getValues()) {
                 ShapedRecipe woodRecipe = new ShapedRecipe(new NamespacedKey(this,
-                    plankMaterial.getKey().toString().toLowerCase(Locale.ROOT).replace(":", "_")
-                        + "_grappling_hook_recipe"
+                    plankMaterial.getKey().getKey().toLowerCase(Locale.ROOT) + "_grappling_hook_recipe"
                 ), HookAPI.createGrapplingHook(woodUses))
                     .shape(" **", " &*", "   ")
                     .setIngredient('*', plankMaterial)
