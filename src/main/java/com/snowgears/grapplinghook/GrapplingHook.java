@@ -63,9 +63,9 @@ public class GrapplingHook extends JavaPlugin {
 
         timeBetweenUses = getConfig().getInt("timeBetweenGrapples");
 
-        if (disableCrafting == false) {
+        if (!disableCrafting) {
             for (Material plankMaterial : Tag.PLANKS.getValues()) {
-                ShapedRecipe woodRecipe = new ShapedRecipe(NamespacedKey.randomKey(),
+                ShapedRecipe woodRecipe = new ShapedRecipe(new NamespacedKey(this, "wood_grappling_hook_recipe"),
                     HookAPI.createGrapplingHook(woodUses)
                 )
                     .shape(" **", " &*", "   ")
@@ -74,23 +74,27 @@ public class GrapplingHook extends JavaPlugin {
                 getServer().addRecipe(woodRecipe);
             }
 
-            ShapedRecipe stoneRecipe = new ShapedRecipe(NamespacedKey.randomKey(),
-                HookAPI.createGrapplingHook(stoneUses))
+            ShapedRecipe stoneRecipe = new ShapedRecipe(new NamespacedKey(this, "stone_grappling_hook_recipe"),
+                HookAPI.createGrapplingHook(stoneUses)
+            )
                 .shape(" **", " &*", "   ")
                 .setIngredient('*', Material.COBBLESTONE)
                 .setIngredient('&', Material.FISHING_ROD);
 
-            ShapedRecipe ironRecipe = new ShapedRecipe(NamespacedKey.randomKey(), HookAPI.createGrapplingHook(ironUses))
+            ShapedRecipe ironRecipe = new ShapedRecipe(new NamespacedKey(this, "iron_grappling_hook_recipe"),
+                HookAPI.createGrapplingHook(ironUses)
+            )
                 .shape(" **", " &*", "   ")
                 .setIngredient('*', Material.IRON_INGOT)
                 .setIngredient('&', Material.FISHING_ROD);
 
-            ShapedRecipe goldRecipe = new ShapedRecipe(NamespacedKey.randomKey(), HookAPI.createGrapplingHook(goldUses))
+            ShapedRecipe goldRecipe = new ShapedRecipe(new NamespacedKey(this, "gold_grappling_hook_recipe"),
+                HookAPI.createGrapplingHook(goldUses))
                 .shape(" **", " &*", "   ")
                 .setIngredient('*', Material.GOLD_INGOT)
                 .setIngredient('&', Material.FISHING_ROD);
 
-            ShapedRecipe diamondRecipe = new ShapedRecipe(NamespacedKey.randomKey(),
+            ShapedRecipe diamondRecipe = new ShapedRecipe(new NamespacedKey(this, "diamond_grappling_hook_recipe"),
                 HookAPI.createGrapplingHook(diamondUses)
             )
                 .shape(" **", " &*", "   ")
