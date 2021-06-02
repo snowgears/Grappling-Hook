@@ -1,0 +1,149 @@
+# Thanks for downloading Grappling Hook! #
+# IF YOU HAVE A QUESTION COME JOIN MY DISCORD: https://discord.gg/GpSwEWS #
+
+# &b : AQUA
+# &0 : BLACK
+# &9 : BLUE
+# &l : BOLD
+# &3 : DARK_AQUA
+# &1 : DARK_BLUE
+# &8 : DARK_GRAY
+# &2 : DARK_GREEN
+# &5 : DARK_PURPLE
+# &4 : DARK_RED
+# &6 : GOLD
+# &7 : GRAY
+# &a : GREEN
+# &o : ITALIC
+# &d : LIGHT_PURPLE
+# &k : MAGIC
+# &c : RED
+# &r : RESET
+# &m : STRIKETHROUGH
+# &n : UNDERLINE
+# &f : WHITE
+# &e : YELLOW
+
+
+# [uses] - tag that will display the uses left on the grappling hook item #
+recipes:
+  1:
+    enabled: true
+    name: '&6Wood Grappling Hook'
+    lore: '&7Uses left - &a[uses]'
+    uses: 5
+    timeBetweenGrapples: 0 # in seconds #
+    fallDamage: false
+    slowFall: true
+    lineBreak: true
+    recipe:
+      materials:
+        F: 'FISHING_ROD'
+        P: 'OAK_PLANKS' # this is all wood planks #
+      shape:
+        - '[][P][P]'
+        - '[][F][P]'
+        - '[][][]'
+    entityBlacklist:
+      - ITEM_FRAME
+      - ARMOR_STAND
+  2:
+    enabled: true
+    name: '&6Stone Grappling Hook'
+    lore: '&7Uses left - &a[uses]'
+    uses: 10
+    timeBetweenGrapples: 0 # in seconds #
+    fallDamage: false
+    slowFall: true
+    lineBreak: true
+    recipe:
+      materials:
+        F: 'FISHING_ROD'
+        C: 'COBBLESTONE'
+      shape:
+        - '[][C][C]'
+        - '[][F][C]'
+        - '[][][]'
+    entityBlacklist:
+      - ITEM_FRAME
+      - ARMOR_STAND
+  3:
+    enabled: true
+    name: '&6Iron Grappling Hook'
+    lore: '&7Uses left - &a[uses]'
+    uses: 20
+    timeBetweenGrapples: 0 # in seconds #
+    fallDamage: false
+    slowFall: true
+    lineBreak: true
+    recipe:
+      materials:
+        F: 'FISHING_ROD'
+        I: 'IRON_INGOT'
+      shape:
+        - '[][I][I]'
+        - '[][F][I]'
+        - '[][][]'
+    entityBlacklist:
+      - ITEM_FRAME
+      - ARMOR_STAND
+  4:
+    enabled: true
+    name: '&6Gold Grappling Hook'
+    lore: '&7Uses left - &a[uses]'
+    uses: 25
+    timeBetweenGrapples: 0 # in seconds #
+    fallDamage: false
+    slowFall: true
+    lineBreak: true
+    recipe:
+      materials:
+        F: 'FISHING_ROD'
+        G: 'GOLD_INGOT'
+      shape:
+        - '[][G][G]'
+        - '[][F][G]'
+        - '[][][]'
+    entityBlacklist:
+      - ITEM_FRAME
+      - ARMOR_STAND
+  5:
+    enabled: true
+    name: '&6Emerald Grappling Hook'
+    lore: '&7Uses left - &a[uses]'
+    uses: 40
+    timeBetweenGrapples: 0 # in seconds #
+    fallDamage: false
+    slowFall: true
+    lineBreak: true
+    recipe:
+      materials:
+        F: 'FISHING_ROD'
+        E: 'EMERALD'
+      shape:
+        - '[][E][E]'
+        - '[][F][E]'
+        - '[][][]'
+    entityBlacklist:
+      - ITEM_FRAME
+      - ARMOR_STAND
+  6:
+    enabled: true
+    name: '&6Diamond Grappling Hook'
+    lore: '&7Uses left - &a[uses]'
+    uses: 100
+    timeBetweenGrapples: 0 # in seconds #
+    fallDamage: false
+    slowFall: true
+    lineBreak: true
+    recipe:
+      materials:
+        F: 'FISHING_ROD'
+        D: 'DIAMOND'
+      shape:
+        - '[][D][D]'
+        - '[][F][D]'
+        - '[][][]'
+    entityBlacklist:
+      - ITEM_FRAME
+      - ARMOR_STAND

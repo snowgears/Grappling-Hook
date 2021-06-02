@@ -22,7 +22,7 @@ public class PlayerGrappleEvent extends Event implements Cancellable{
 			player = p;
 			entity = e;
 			pullLocation = l;
-	        hookItem = p.getItemInHand();
+	        hookItem = p.getInventory().getItemInMainHand();
 	    }
 		
 		public Player getPlayer(){

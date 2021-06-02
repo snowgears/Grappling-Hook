@@ -1,7 +1,9 @@
 name: GrapplingHook
-author: Tanner Embry
+author: SnowGears
 description: A simple grappling hook plugin.
-version: 1.5.9
+version: 1.6
+api-version: 1.16
+softdepend: [Shop]
 main: com.snowgears.grapplinghook.GrapplingHook
 permissions:
     grapplinghook.pull.self:
@@ -16,23 +18,11 @@ permissions:
     grapplinghook.pull.items:
         description: Allows player to pull items with the hook
         default: op
-    grapplinghook.craft.wood:
-        description: Allows player to craft wood grappling hooks
+    grapplinghook.craft.#:
+        description: Allows player to craft the grappling hook defined by number in recipes.yml
         default: op
-    grapplinghook.craft.stone:
-        description: Allows player to craft stone grappling hooks
-        default: op
-    grapplinghook.craft.iron:
-        description: Allows player to craft iron grappling hooks
-        default: op
-    grapplinghook.craft.gold:
-        description: Allows player to craft gold grappling hooks
-        default: op
-    grapplinghook.craft.diamond:
-        description: Allows player to craft diamond grappling hooks
-        default: op
-    grapplinghook.command.give:
-        description: Allows player to use command /gh give
+    grapplinghook.command:
+        description: Allows player to use commands for plugin
         default: op
     grapplinghook.player.nopull:
         description: Player can not be pulled by other players

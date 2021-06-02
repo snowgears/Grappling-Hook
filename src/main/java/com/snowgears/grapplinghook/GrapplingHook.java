@@ -1,103 +1,77 @@
 package com.snowgears.grapplinghook;
 
 import com.snowgears.grapplinghook.api.HookAPI;
-import com.snowgears.grapplinghook.utils.Metrics;
+import com.snowgears.grapplinghook.utils.RecipeLoader;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Tag;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.IOException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class GrapplingHook extends JavaPlugin{
 	
-	public final GrapplingListener alisten = new GrapplingListener(this);
-	public static GrapplingHook plugin;
-	protected FileConfiguration config;  
+	private GrapplingListener grapplingListener = new GrapplingListener(this);
+	private static GrapplingHook plugin;
+	protected FileConfiguration config;
+	private Plugin shopPlugin;
 
-	public static boolean usePerms = false;
-	public static boolean teleportHooked = false;
-	public static boolean fallDamage = false;
-	public static boolean disableCrafting = false;
-	public static int woodUses = 0;
-	public static int stoneUses = 0;
-	public static int ironUses = 0;
-	public static int goldUses = 0;
-	public static int diamondUses = 0;
-	public static int timeBetweenUses = 0;
+	private static boolean usePerms = false;
+	private static boolean teleportHooked = false;
+	private static boolean useMetrics = false;
+	private static RecipeLoader recipeLoader;
+
 
 	public void onEnable(){
 		plugin = this;
-		getServer().getPluginManager().registerEvents(alisten, this);
-		
-		 try {
-		     Metrics metrics = new Metrics(this);
-		     metrics.start();
-		 } catch (IOException e) {
-		     // Failed to submit the stats
-		 }
+		getServer().getPluginManager().registerEvents(grapplingListener, this);
 		
 		File configFile = new File(this.getDataFolder() + "/config.yml");
-
 		if(!configFile.exists())
 		{
 		  this.saveDefaultConfig();
 		}
-		
-		usePerms = getConfig().getBoolean("usePermissions");
-		teleportHooked = getConfig().getBoolean("teleportToHook");
-		fallDamage = getConfig().getBoolean("fallDamageWithHook");
-		disableCrafting = getConfig().getBoolean("disableCrafting");
-		
-		woodUses = getConfig().getConfigurationSection("Uses").getInt("wood");
-		stoneUses = getConfig().getConfigurationSection("Uses").getInt("stone");
-		ironUses = getConfig().getConfigurationSection("Uses").getInt("iron");
-		goldUses = getConfig().getConfigurationSection("Uses").getInt("gold");
-		diamondUses = getConfig().getConfigurationSection("Uses").getInt("diamond");
-		
-		timeBetweenUses = getConfig().getInt("timeBetweenGrapples"); 
+		config = YamlConfiguration.loadConfiguration(configFile);
 
-		if(disableCrafting == false){
-			for(Material plankMaterial : Tag.PLANKS.getValues()) {
-				ShapedRecipe woodRecipe = new ShapedRecipe(HookAPI.createGrapplingHook(woodUses))
-						.shape(" **", " &*", "   ")
-						.setIngredient('*', plankMaterial)
-						.setIngredient('&', Material.FISHING_ROD);
-				getServer().addRecipe(woodRecipe);
-			}
-			
-			ShapedRecipe stoneRecipe = new ShapedRecipe(HookAPI.createGrapplingHook(stoneUses))
-			.shape(" **", " &*", "   ")
-			.setIngredient('*', Material.COBBLESTONE)
-			.setIngredient('&', Material.FISHING_ROD);
-			
-			ShapedRecipe ironRecipe = new ShapedRecipe(HookAPI.createGrapplingHook(ironUses))
-			.shape(" **", " &*", "   ")
-			.setIngredient('*', Material.IRON_INGOT)
-			.setIngredient('&', Material.FISHING_ROD);
-			
-			ShapedRecipe goldRecipe = new ShapedRecipe(HookAPI.createGrapplingHook(goldUses))
-			.shape(" **", " &*", "   ")
-			.setIngredient('*', Material.GOLD_INGOT)
-			.setIngredient('&', Material.FISHING_ROD);
-			
-			ShapedRecipe diamondRecipe = new ShapedRecipe(HookAPI.createGrapplingHook(diamondUses))
-			.shape(" **", " &*", "   ")
-			.setIngredient('*', Material.DIAMOND)
-			.setIngredient('&', Material.FISHING_ROD);
-
-			getServer().addRecipe(stoneRecipe);
-			getServer().addRecipe(ironRecipe);
-			getServer().addRecipe(goldRecipe);
-			getServer().addRecipe(diamondRecipe);
+		File recipeConfigFile = new File(getDataFolder(), "recipes.yml");
+		if (!recipeConfigFile.exists()) {
+			recipeConfigFile.getParentFile().mkdirs();
+			this.copy(getResource("recipes.yml"), recipeConfigFile);
 		}
+		recipeLoader = new RecipeLoader(plugin);
+		
+		usePerms = config.getBoolean("usePermissions");
+		teleportHooked = config.getBoolean("teleportToHook");
+		useMetrics = config.getBoolean("useMetrics");
+
+		if(useMetrics){
+			// You can find the plugin ids of your plugins on the page https://bstats.org/what-is-my-plugin-id
+			int pluginId = 9957;
+			Metrics metrics = new Metrics(this, pluginId);
+
+			// Optional: Add custom charts
+			//metrics.addCustomChart(new Metrics.SimplePie("chart_id", () -> "My value"));
+		}
+
+		try {
+			shopPlugin = Bukkit.getServer().getPluginManager().getPlugin("Shop");
+		} catch (NullPointerException npe){
+			shopPlugin = null;
+		}
+	}
+
+	public RecipeLoader getRecipeLoader(){
+		return recipeLoader;
 	}
 
 	@Override
@@ -194,5 +168,42 @@ public class GrapplingHook extends JavaPlugin{
 	        return false; 
 	    }
 	    return true;
+	}
+
+	public static GrapplingHook getPlugin(){
+		return plugin;
+	}
+
+	public GrapplingListener getGrapplingListener(){
+		return grapplingListener;
+	}
+
+	public boolean usePerms(){
+		return usePerms;
+	}
+
+	public boolean getTeleportHooked(){
+		return teleportHooked;
+	}
+
+	public NamespacedKey getShopNamedSpaceKey(){
+		if(shopPlugin == null)
+			return null;
+		return new NamespacedKey(shopPlugin, "display");
+	}
+
+	private void copy(InputStream in, File file) {
+		try {
+			OutputStream out = new FileOutputStream(file);
+			byte[] buf = new byte[1024];
+			int len;
+			while ((len = in.read(buf)) > 0) {
+				out.write(buf, 0, len);
+			}
+			out.close();
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -1,24 +1,13 @@
 # Thanks for downloading Grappling Hook! #
-# Please tell me what you think! #
+# IF YOU HAVE A QUESTION COME JOIN MY DISCORD: https://discord.gg/GpSwEWS #
 
 usePermissions: false
-
-# This is how many times grappling hooks can be used before they break #
-Uses:
-  wood: 5
-  stone: 10
-  iron: 20
-  gold: 25
-  diamond: 100
 
 # Setting this to true will use teleporting instead of velocity #
 teleportToHook: false
 
-# If this is true, players will not be able to craft grappling hooks #
-disableCrafting: false
+# Setting this to false will not report plugin metrics to bstats #
+useMetrics: true
 
-# If this is true, players will take fall damage with grappling hooks #
-fallDamageWithHook: false
-
-# This is how much time (in seconds) players must wait between grapples #
-timeBetweenGrapples: 0
+# Change this to change the base command alias for the plugin #
+command: 'gh'
