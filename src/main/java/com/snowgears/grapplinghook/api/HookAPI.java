@@ -86,6 +86,18 @@ public final class HookAPI {
 		return false;
 	}
 
+	public static boolean getHookInHandHasAirHook(Player player){
+
+		try {
+			ItemMeta im = player.getInventory().getItemInMainHand().getItemMeta();
+			PersistentDataContainer persistentData = im.getPersistentDataContainer();
+
+			int airHook = persistentData.get(new NamespacedKey(GrapplingHook.getPlugin(), "airHook"), PersistentDataType.INTEGER);
+			return airHook > 0;
+		} catch (NullPointerException npe){}
+		return false;
+	}
+
 	public static int getHookInHandTimeBetweenGrapples(Player player){
 
 		try {
@@ -94,6 +106,19 @@ public final class HookAPI {
 
 			int timeBetweenGrapples = persistentData.get(new NamespacedKey(GrapplingHook.getPlugin(), "timeBetweenGrapples"), PersistentDataType.INTEGER);
 			return timeBetweenGrapples;
+		} catch (NullPointerException npe){}
+		return 0;
+	}
+
+	//returns the recipe # of the hook (from the recipes.yml file)
+	public static int getHookRecipeNumber(ItemStack hook){
+
+		try {
+			ItemMeta im = hook.getItemMeta();
+			PersistentDataContainer persistentData = im.getPersistentDataContainer();
+
+			int recipeNumber = persistentData.get(new NamespacedKey(GrapplingHook.getPlugin(), "recipe"), PersistentDataType.INTEGER);
+			return recipeNumber;
 		} catch (NullPointerException npe){}
 		return 0;
 	}
@@ -110,19 +135,19 @@ public final class HookAPI {
 //	}
 	
 	public static boolean playerOnCooldown(Player player) {
-		if(GrapplingHook.getPlugin().getGrapplingListener().noGrapplePlayers.containsKey(player.getName()))
+		if(GrapplingHook.getPlugin().getGrapplingListener().noGrapplePlayers.containsKey(player.getUniqueId()))
 			 return true;
 		return false;
 	}
 	
 	public static void removePlayerCooldown(Player player) {
-		if(GrapplingHook.getPlugin().getGrapplingListener().noGrapplePlayers.containsKey(player.getName()))
-			GrapplingHook.getPlugin().getGrapplingListener().noGrapplePlayers.remove(player.getName());
+		if(GrapplingHook.getPlugin().getGrapplingListener().noGrapplePlayers.containsKey(player.getUniqueId()))
+			GrapplingHook.getPlugin().getGrapplingListener().noGrapplePlayers.remove(player.getUniqueId());
 	}
 	
 	public static void addPlayerCooldown(final Player player, int seconds) {
-		if(GrapplingHook.getPlugin().getGrapplingListener().noGrapplePlayers.containsKey(player.getName()))
-			Bukkit.getServer().getScheduler().cancelTask(GrapplingHook.getPlugin().getGrapplingListener().noGrapplePlayers.get(player.getName()));
+		if(GrapplingHook.getPlugin().getGrapplingListener().noGrapplePlayers.containsKey(player.getUniqueId()))
+			Bukkit.getServer().getScheduler().cancelTask(GrapplingHook.getPlugin().getGrapplingListener().noGrapplePlayers.get(player.getUniqueId()));
 		
 		int taskId = GrapplingHook.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(GrapplingHook.getPlugin(),new Runnable() {
 			  public void run(){
@@ -130,7 +155,7 @@ public final class HookAPI {
 			  }
 	  	}, (seconds*20));
 
-		GrapplingHook.getPlugin().getGrapplingListener().noGrapplePlayers.put(player.getName(), taskId);
+		GrapplingHook.getPlugin().getGrapplingListener().noGrapplePlayers.put(player.getUniqueId(), taskId);
 	}
 	
 //	public static void setUses(ItemStack is, int uses) {

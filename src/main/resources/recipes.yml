@@ -36,6 +36,7 @@ recipes:
     fallDamage: false
     slowFall: true
     lineBreak: true
+    airHook: false
     recipe:
       materials:
         F: 'FISHING_ROD'
@@ -56,6 +57,7 @@ recipes:
     fallDamage: false
     slowFall: true
     lineBreak: true
+    airHook: false
     recipe:
       materials:
         F: 'FISHING_ROD'
@@ -76,6 +78,7 @@ recipes:
     fallDamage: false
     slowFall: true
     lineBreak: true
+    airHook: false
     recipe:
       materials:
         F: 'FISHING_ROD'
@@ -96,6 +99,7 @@ recipes:
     fallDamage: false
     slowFall: true
     lineBreak: true
+    airHook: false
     recipe:
       materials:
         F: 'FISHING_ROD'
@@ -116,6 +120,7 @@ recipes:
     fallDamage: false
     slowFall: true
     lineBreak: true
+    airHook: false
     recipe:
       materials:
         F: 'FISHING_ROD'
@@ -136,6 +141,7 @@ recipes:
     fallDamage: false
     slowFall: true
     lineBreak: true
+    airHook: false
     recipe:
       materials:
         F: 'FISHING_ROD'

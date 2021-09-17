@@ -9,5 +9,8 @@ teleportToHook: false
 # Setting this to false will not report plugin metrics to bstats #
 useMetrics: true
 
+# Setting this to true will consume uses when the hook slowfall is used #
+consumeUseOnSlowfall: false
+
 # Change this to change the base command alias for the plugin #
 command: 'gh'

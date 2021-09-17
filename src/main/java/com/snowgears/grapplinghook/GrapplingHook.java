@@ -1,6 +1,7 @@
 package com.snowgears.grapplinghook;
 
 import com.snowgears.grapplinghook.api.HookAPI;
+import com.snowgears.grapplinghook.utils.ConfigUpdater;
 import com.snowgears.grapplinghook.utils.RecipeLoader;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -14,10 +15,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
+import java.util.ArrayList;
 
 public class GrapplingHook extends JavaPlugin{
 	
@@ -29,6 +28,7 @@ public class GrapplingHook extends JavaPlugin{
 	private static boolean usePerms = false;
 	private static boolean teleportHooked = false;
 	private static boolean useMetrics = false;
+	private static boolean consumeUseOnSlowfall = false;
 	private static RecipeLoader recipeLoader;
 
 
@@ -41,6 +41,11 @@ public class GrapplingHook extends JavaPlugin{
 		{
 		  this.saveDefaultConfig();
 		}
+        try {
+            ConfigUpdater.update(plugin, "config.yml", configFile, new ArrayList<>());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 		config = YamlConfiguration.loadConfiguration(configFile);
 
 		File recipeConfigFile = new File(getDataFolder(), "recipes.yml");
@@ -53,6 +58,7 @@ public class GrapplingHook extends JavaPlugin{
 		usePerms = config.getBoolean("usePermissions");
 		teleportHooked = config.getBoolean("teleportToHook");
 		useMetrics = config.getBoolean("useMetrics");
+		consumeUseOnSlowfall = config.getBoolean("consumeUseOnSlowfall");
 
 		if(useMetrics){
 			// You can find the plugin ids of your plugins on the page https://bstats.org/what-is-my-plugin-id
@@ -176,6 +182,10 @@ public class GrapplingHook extends JavaPlugin{
 
 	public GrapplingListener getGrapplingListener(){
 		return grapplingListener;
+	}
+
+	public boolean isConsumeUseOnSlowfall(){
+		return consumeUseOnSlowfall;
 	}
 
 	public boolean usePerms(){
