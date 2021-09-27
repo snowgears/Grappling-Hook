@@ -50,13 +50,21 @@ public class RecipeLoader {
             boolean enabled = config.getBoolean("recipes." + recipeNumber + ".enabled");
             if (enabled) {
                 String name = config.getString("recipes." + recipeNumber + ".name");
-                String lore = config.getString("recipes." + recipeNumber + ".lore");
+                List<String> lore;
+                try {
+                    lore = config.getStringList("recipes." + recipeNumber + ".lore");
+                } catch (NullPointerException e) {
+                    lore = new ArrayList<>();
+                }
                 int uses = config.getInt("recipes." + recipeNumber + ".uses");
+                double velocityThrow = config.getDouble("recipes." + recipeNumber + ".velocityThrow");
+                double velocityPull = config.getDouble("recipes." + recipeNumber + ".velocityPull");
                 int timeBetweenGrapples = config.getInt("recipes." + recipeNumber + ".timeBetweenGrapples");
                 boolean fallDamage = config.getBoolean("recipes." + recipeNumber + ".fallDamage");
                 boolean slowFall = config.getBoolean("recipes." + recipeNumber + ".slowFall");
                 boolean lineBreak = config.getBoolean("recipes." + recipeNumber + ".lineBreak");
                 boolean airHook = config.getBoolean("recipes." + recipeNumber + ".airHook");
+                boolean stickyHook = config.getBoolean("recipes." + recipeNumber + ".stickyHook");
 
                 try {
                     List<String> entityBlackList = config.getStringList("recipes." + recipeNumber + ".entityBlacklist");
@@ -70,7 +78,9 @@ public class RecipeLoader {
                 hookItemMeta.setDisplayName(formatString(name, uses));
                 if(lore != null && !lore.isEmpty()) {
                     List<String> loreList = new ArrayList<>();
-                    loreList.add(formatString(lore, uses));
+                    for(String loreString : lore) {
+                        loreList.add(formatString(loreString, uses));
+                    }
                     hookItemMeta.setLore(loreList);
                 }
 
@@ -80,7 +90,10 @@ public class RecipeLoader {
                 persistentData.set(new NamespacedKey(plugin, "slowFall"), PersistentDataType.INTEGER, (slowFall ? 1 : 0));
                 persistentData.set(new NamespacedKey(plugin, "lineBreak"), PersistentDataType.INTEGER, (lineBreak ? 1 : 0));
                 persistentData.set(new NamespacedKey(plugin, "airHook"), PersistentDataType.INTEGER, (airHook ? 1 : 0));
+                persistentData.set(new NamespacedKey(plugin, "stickyHook"), PersistentDataType.INTEGER, (stickyHook ? 1 : 0));
                 persistentData.set(new NamespacedKey(plugin, "uses"), PersistentDataType.INTEGER, uses);
+                persistentData.set(new NamespacedKey(plugin, "velocityThrow"), PersistentDataType.DOUBLE, velocityThrow);
+                persistentData.set(new NamespacedKey(plugin, "velocityPull"), PersistentDataType.DOUBLE, velocityPull);
                 persistentData.set(new NamespacedKey(plugin, "recipe"), PersistentDataType.INTEGER, Integer.parseInt(recipeNumber));
 
                 hookItem.setItemMeta(hookItemMeta);

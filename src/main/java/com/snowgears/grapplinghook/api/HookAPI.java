@@ -98,6 +98,42 @@ public final class HookAPI {
 		return false;
 	}
 
+	public static boolean getHookInHandHasStickyHook(Player player){
+
+		try {
+			ItemMeta im = player.getInventory().getItemInMainHand().getItemMeta();
+			PersistentDataContainer persistentData = im.getPersistentDataContainer();
+
+			int stickyHook = persistentData.get(new NamespacedKey(GrapplingHook.getPlugin(), "stickyHook"), PersistentDataType.INTEGER);
+			return stickyHook > 0;
+		} catch (NullPointerException npe){}
+		return false;
+	}
+
+	public static double getHookInHandVelocityThrow(Player player){
+
+		try {
+			ItemMeta im = player.getInventory().getItemInMainHand().getItemMeta();
+			PersistentDataContainer persistentData = im.getPersistentDataContainer();
+
+			double velocityThrow = persistentData.get(new NamespacedKey(GrapplingHook.getPlugin(), "velocityThrow"), PersistentDataType.DOUBLE);
+			return velocityThrow;
+		} catch (NullPointerException npe){}
+		return 1.0;
+	}
+
+	public static double getHookInHandVelocityPull(Player player){
+
+		try {
+			ItemMeta im = player.getInventory().getItemInMainHand().getItemMeta();
+			PersistentDataContainer persistentData = im.getPersistentDataContainer();
+
+			double velocityPull = persistentData.get(new NamespacedKey(GrapplingHook.getPlugin(), "velocityPull"), PersistentDataType.DOUBLE);
+			return velocityPull;
+		} catch (NullPointerException npe){}
+		return 1.0;
+	}
+
 	public static int getHookInHandTimeBetweenGrapples(Player player){
 
 		try {

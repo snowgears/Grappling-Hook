@@ -30,13 +30,17 @@ recipes:
   1:
     enabled: true
     name: '&6Wood Grappling Hook'
-    lore: '&7Uses left - &a[uses]'
+    lore:
+      - '&7Uses left - &a[uses]'
     uses: 5
+    velocityThrow: 1.0
+    velocityPull: 1.0
     timeBetweenGrapples: 0 # in seconds #
     fallDamage: false
     slowFall: true
     lineBreak: true
     airHook: false
+    stickyHook: true
     recipe:
       materials:
         F: 'FISHING_ROD'
@@ -51,13 +55,17 @@ recipes:
   2:
     enabled: true
     name: '&6Stone Grappling Hook'
-    lore: '&7Uses left - &a[uses]'
+    lore:
+      - '&7Uses left - &a[uses]'
     uses: 10
+    velocityThrow: 1.0
+    velocityPull: 1.0
     timeBetweenGrapples: 0 # in seconds #
     fallDamage: false
     slowFall: true
     lineBreak: true
     airHook: false
+    stickyHook: true
     recipe:
       materials:
         F: 'FISHING_ROD'
@@ -72,13 +80,17 @@ recipes:
   3:
     enabled: true
     name: '&6Iron Grappling Hook'
-    lore: '&7Uses left - &a[uses]'
+    lore:
+      - '&7Uses left - &a[uses]'
     uses: 20
+    velocityThrow: 1.0
+    velocityPull: 1.0
     timeBetweenGrapples: 0 # in seconds #
     fallDamage: false
     slowFall: true
     lineBreak: true
     airHook: false
+    stickyHook: true
     recipe:
       materials:
         F: 'FISHING_ROD'
@@ -93,13 +105,17 @@ recipes:
   4:
     enabled: true
     name: '&6Gold Grappling Hook'
-    lore: '&7Uses left - &a[uses]'
+    lore:
+      - '&7Uses left - &a[uses]'
     uses: 25
+    velocityThrow: 1.0
+    velocityPull: 1.0
     timeBetweenGrapples: 0 # in seconds #
     fallDamage: false
     slowFall: true
     lineBreak: true
     airHook: false
+    stickyHook: true
     recipe:
       materials:
         F: 'FISHING_ROD'
@@ -114,13 +130,17 @@ recipes:
   5:
     enabled: true
     name: '&6Emerald Grappling Hook'
-    lore: '&7Uses left - &a[uses]'
+    lore:
+      - '&7Uses left - &a[uses]'
     uses: 40
+    velocityThrow: 1.0
+    velocityPull: 1.0
     timeBetweenGrapples: 0 # in seconds #
     fallDamage: false
     slowFall: true
     lineBreak: true
     airHook: false
+    stickyHook: true
     recipe:
       materials:
         F: 'FISHING_ROD'
@@ -135,13 +155,17 @@ recipes:
   6:
     enabled: true
     name: '&6Diamond Grappling Hook'
-    lore: '&7Uses left - &a[uses]'
+    lore:
+      - '&7Uses left - &a[uses]'
     uses: 100
+    velocityThrow: 1.0
+    velocityPull: 1.0
     timeBetweenGrapples: 0 # in seconds #
     fallDamage: false
     slowFall: true
     lineBreak: true
     airHook: false
+    stickyHook: true
     recipe:
       materials:
         F: 'FISHING_ROD'
