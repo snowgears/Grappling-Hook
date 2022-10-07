@@ -446,23 +446,26 @@ public class GrapplingListener implements Listener{
 	//better method for pulling
 	private void pullEntityToLocation(final Entity e, Location loc, double multiply){
 		Location entityLoc = e.getLocation();
+		
+		Vector boost = e.getVelocity();
+		boost.setY(0.3);
+		e.setVelocity(boost);
+		
+		Bukkit.getScheduler().scheduleSyncDelayedTask(GrapplingHook.getPlugin(), () -> {
+			double g = -0.08;
+			double d = loc.distance(entityLoc);
+			double t = d;
+			double v_x = (1.0+0.07*t) * (loc.getX()-entityLoc.getX())/t;
+			double v_y = (1.0+0.03*t) * (loc.getY()-entityLoc.getY())/t -0.5*g*t;
+			double v_z = (1.0+0.07*t) * (loc.getZ()-entityLoc.getZ())/t;
 
-		entityLoc.setY(entityLoc.getY()+0.5);
-		e.teleport(entityLoc);
-		
-		double g = -0.08;
-		double d = loc.distance(entityLoc);
-		double t = d;
-		double v_x = (1.0+0.07*t) * (loc.getX()-entityLoc.getX())/t;
-		double v_y = (1.0+0.03*t) * (loc.getY()-entityLoc.getY())/t -0.5*g*t;
-		double v_z = (1.0+0.07*t) * (loc.getZ()-entityLoc.getZ())/t;
-		
-		Vector v = e.getVelocity();
-		v.setX(v_x);
-		v.setY(v_y);
-		v.setZ(v_z);
-		v.multiply(multiply);
-		e.setVelocity(v);
+			Vector v = e.getVelocity();
+			v.setX(v_x);
+			v.setY(v_y);
+			v.setZ(v_z);
+			v.multiply(multiply);
+			e.setVelocity(v);
+		}, 1L);
 
 		if(e instanceof Player){
 			Player player = (Player)e;
