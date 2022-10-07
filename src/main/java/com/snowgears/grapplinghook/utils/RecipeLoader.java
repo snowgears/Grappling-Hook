@@ -65,6 +65,7 @@ public class RecipeLoader {
                 boolean lineBreak = config.getBoolean("recipes." + recipeNumber + ".lineBreak");
                 boolean airHook = config.getBoolean("recipes." + recipeNumber + ".airHook");
                 boolean stickyHook = config.getBoolean("recipes." + recipeNumber + ".stickyHook");
+                int customModelData = config.getInt("recipes." + recipeNumber + ".customModelData", 0);
 
                 try {
                     List<String> entityBlackList = config.getStringList("recipes." + recipeNumber + ".entityBlacklist");
@@ -83,6 +84,8 @@ public class RecipeLoader {
                     }
                     hookItemMeta.setLore(loreList);
                 }
+
+                hookItemMeta.setCustomModelData(Integer.valueOf(customModelData));
 
                 PersistentDataContainer persistentData = hookItemMeta.getPersistentDataContainer();
                 persistentData.set(new NamespacedKey(plugin, "timeBetweenGrapples"), PersistentDataType.INTEGER, timeBetweenGrapples);
