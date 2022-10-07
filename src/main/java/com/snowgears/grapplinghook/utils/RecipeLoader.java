@@ -13,7 +13,6 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 public class RecipeLoader {
@@ -30,13 +29,6 @@ public class RecipeLoader {
     }
 
     private void loadRecipes() {
-
-        try {
-            ConfigUpdater.update(plugin, "recipes.yml", recipesFile, new ArrayList<>());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         int loadedCount = 0;
         YamlConfiguration config = YamlConfiguration.loadConfiguration(recipesFile);
         if (config.getConfigurationSection("recipes") == null) {

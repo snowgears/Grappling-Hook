@@ -63,7 +63,10 @@ public class GrapplingHook extends JavaPlugin{
 		if(useMetrics){
 			// You can find the plugin ids of your plugins on the page https://bstats.org/what-is-my-plugin-id
 			int pluginId = 9957;
-			Metrics metrics = new Metrics(this, pluginId);
+
+			try {
+				Metrics metrics = new Metrics(this, pluginId);
+			} catch(Exception e) {}
 
 			// Optional: Add custom charts
 			//metrics.addCustomChart(new Metrics.SimplePie("chart_id", () -> "My value"));
