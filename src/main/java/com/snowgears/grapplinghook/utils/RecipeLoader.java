@@ -3,8 +3,7 @@ package com.snowgears.grapplinghook.utils;
 import com.snowgears.grapplinghook.GrapplingHook;
 import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
@@ -19,7 +18,6 @@ public class RecipeLoader {
 
     private GrapplingHook plugin;
     private File recipesFile;
-    private HashMap<String, List<String>> entityBlackLists = new HashMap<>();
 
     public RecipeLoader(GrapplingHook plugin){
         this.plugin = plugin;
@@ -41,6 +39,7 @@ public class RecipeLoader {
         for (String recipeNumber : allRecipeNumbers) {
             boolean enabled = config.getBoolean("recipes." + recipeNumber + ".enabled");
             if (enabled) {
+                String id = config.getString("recipes." + recipeNumber + ".id");
                 String name = config.getString("recipes." + recipeNumber + ".name");
                 List<String> lore;
                 try {
@@ -55,16 +54,57 @@ public class RecipeLoader {
                 boolean fallDamage = config.getBoolean("recipes." + recipeNumber + ".fallDamage");
                 boolean slowFall = config.getBoolean("recipes." + recipeNumber + ".slowFall");
                 boolean lineBreak = config.getBoolean("recipes." + recipeNumber + ".lineBreak");
-                boolean airHook = config.getBoolean("recipes." + recipeNumber + ".airHook");
                 boolean stickyHook = config.getBoolean("recipes." + recipeNumber + ".stickyHook");
                 int customModelData = config.getInt("recipes." + recipeNumber + ".customModelData", 0);
 
+                HookSettings hookSettings = new HookSettings(id, uses, velocityThrow, velocityPull, timeBetweenGrapples, fallDamage, slowFall, lineBreak, stickyHook, customModelData);
+
                 try {
-                    List<String> entityBlackList = config.getStringList("recipes." + recipeNumber + ".entityBlacklist");
-                    entityBlackLists.put(formatString(name, uses), entityBlackList);
+                    boolean isBlackList = false;
+                    String blackListString = config.getString("recipes." + recipeNumber + ".entity.listType");
+                    List<String> entityTypeStrings = config.getStringList("recipes." + recipeNumber + ".entity.list");
+
+                    List<EntityType> entityTypeList = new ArrayList<>();
+                    for(String entityTypeString : entityTypeStrings){
+                        try {
+                            if(!entityTypeString.isEmpty())
+                                entityTypeList.add(EntityType.valueOf(entityTypeString));
+                        } catch (IllegalArgumentException e){
+                            System.out.println("[GrapplingHook] ERROR: unrecognized entity type in recipe "+recipeNumber+": "+entityTypeString);
+                        }
+                    }
+
+                    if(blackListString.equalsIgnoreCase("blacklist"))
+                        isBlackList = true;
+                    hookSettings.setEntityList(isBlackList, entityTypeList);
                 } catch (NullPointerException e){
-                    entityBlackLists.put(formatString(name, uses), new ArrayList<>());
+                    hookSettings.setEntityList(true, new ArrayList<>());
                 }
+
+                try {
+                    boolean isBlackList = false;
+                    String blackListString = config.getString("recipes." + recipeNumber + ".entity.listType");
+                    List<String> materialStrings = config.getStringList("recipes." + recipeNumber + ".material.list");
+
+                    List<Material> materialList = new ArrayList<>();
+                    for(String materialString : materialStrings){
+                        try {
+                            if(!materialString.isEmpty())
+                                materialList.add(Material.valueOf(materialString));
+                        } catch (IllegalArgumentException e){
+                            System.out.println("[GrapplingHook] ERROR: unrecognized material in recipe "+recipeNumber+": "+materialString);
+                        }
+                    }
+
+                    if(blackListString.equalsIgnoreCase("blacklist"))
+                        isBlackList = true;
+                    hookSettings.setMaterialList(isBlackList, materialList);
+                } catch (NullPointerException e){
+                    hookSettings.setMaterialList(true, new ArrayList<>());
+                }
+
+                //register the hook setting in map
+                plugin.getGrapplingListener().addHookSettings(id, hookSettings);
 
                 ItemStack hookItem = new ItemStack(Material.FISHING_ROD);
                 ItemMeta hookItemMeta = hookItem.getItemMeta();
@@ -77,19 +117,12 @@ public class RecipeLoader {
                     hookItemMeta.setLore(loreList);
                 }
 
-                hookItemMeta.setCustomModelData(Integer.valueOf(customModelData));
+                if(customModelData != 0)
+                    hookItemMeta.setCustomModelData(Integer.valueOf(customModelData));
 
                 PersistentDataContainer persistentData = hookItemMeta.getPersistentDataContainer();
-                persistentData.set(new NamespacedKey(plugin, "timeBetweenGrapples"), PersistentDataType.INTEGER, timeBetweenGrapples);
-                persistentData.set(new NamespacedKey(plugin, "fallDamage"), PersistentDataType.INTEGER, (fallDamage ? 1 : 0));
-                persistentData.set(new NamespacedKey(plugin, "slowFall"), PersistentDataType.INTEGER, (slowFall ? 1 : 0));
-                persistentData.set(new NamespacedKey(plugin, "lineBreak"), PersistentDataType.INTEGER, (lineBreak ? 1 : 0));
-                persistentData.set(new NamespacedKey(plugin, "airHook"), PersistentDataType.INTEGER, (airHook ? 1 : 0));
-                persistentData.set(new NamespacedKey(plugin, "stickyHook"), PersistentDataType.INTEGER, (stickyHook ? 1 : 0));
                 persistentData.set(new NamespacedKey(plugin, "uses"), PersistentDataType.INTEGER, uses);
-                persistentData.set(new NamespacedKey(plugin, "velocityThrow"), PersistentDataType.DOUBLE, velocityThrow);
-                persistentData.set(new NamespacedKey(plugin, "velocityPull"), PersistentDataType.DOUBLE, velocityPull);
-                persistentData.set(new NamespacedKey(plugin, "recipe"), PersistentDataType.INTEGER, Integer.parseInt(recipeNumber));
+                persistentData.set(new NamespacedKey(plugin, "id"), PersistentDataType.STRING, id);
 
                 hookItem.setItemMeta(hookItemMeta);
 
@@ -160,21 +193,5 @@ public class RecipeLoader {
         unformattedString = unformattedString.replace("[uses]", ""+uses);
         unformattedString = ChatColor.translateAlternateColorCodes('&', unformattedString);
         return unformattedString;
-    }
-
-    public boolean isEntityOnHookBlacklist(Player player, Entity hooked){
-        try {
-            ItemStack is = player.getInventory().getItemInMainHand();
-            String name = is.getItemMeta().getDisplayName();
-            for(String entity : entityBlackLists.get(name)){
-                if(entity.equalsIgnoreCase(hooked.getType().toString())) {
-                    return true;
-                }
-            }
-
-        } catch (Exception e){
-            return false;
-        }
-        return false;
     }
 }

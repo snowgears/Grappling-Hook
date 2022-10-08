@@ -29,10 +29,11 @@
 recipes:
   1:
     enabled: true
+    id: 'wood_hook'
     name: '&6Wood Grappling Hook'
     lore:
       - '&7Uses left - &a[uses]'
-    customModelData: 110
+    customModelData: 0
     uses: 5
     velocityThrow: 1.0
     velocityPull: 1.0
@@ -40,7 +41,6 @@ recipes:
     fallDamage: false
     slowFall: true
     lineBreak: true
-    airHook: false
     stickyHook: true
     recipe:
       materials:
@@ -50,15 +50,23 @@ recipes:
         - '[][P][P]'
         - '[][F][P]'
         - '[][][]'
-    entityBlacklist:
-      - ITEM_FRAME
-      - ARMOR_STAND
+    entity:
+      listType: 'BLACKLIST' # options are BLACKLIST and WHITELIST
+      list:
+        - 'ITEM_FRAME'
+        - 'ARMOR_STAND'
+    material:
+      listType: 'BLACKLIST' # options are BLACKLIST and WHITELIST
+      list:
+        - 'WATER'
+        - 'AIR'
   2:
     enabled: true
+    id: 'stone_hook'
     name: '&6Stone Grappling Hook'
     lore:
       - '&7Uses left - &a[uses]'
-    customModelData: 120
+    customModelData: 0
     uses: 10
     velocityThrow: 1.0
     velocityPull: 1.0
@@ -66,7 +74,6 @@ recipes:
     fallDamage: false
     slowFall: true
     lineBreak: true
-    airHook: false
     stickyHook: true
     recipe:
       materials:
@@ -76,15 +83,23 @@ recipes:
         - '[][C][C]'
         - '[][F][C]'
         - '[][][]'
-    entityBlacklist:
-      - ITEM_FRAME
-      - ARMOR_STAND
+    entity:
+      listType: 'BLACKLIST' # options are BLACKLIST and WHITELIST
+      list:
+        - 'ITEM_FRAME'
+        - 'ARMOR_STAND'
+    material:
+      listType: 'BLACKLIST' # options are BLACKLIST and WHITELIST
+      list:
+        - 'WATER'
+        - 'AIR'
   3:
     enabled: true
+    id: 'iron_hook'
     name: '&6Iron Grappling Hook'
     lore:
       - '&7Uses left - &a[uses]'
-    customModelData: 130
+    customModelData: 0
     uses: 20
     velocityThrow: 1.0
     velocityPull: 1.0
@@ -92,7 +107,6 @@ recipes:
     fallDamage: false
     slowFall: true
     lineBreak: true
-    airHook: false
     stickyHook: true
     recipe:
       materials:
@@ -102,15 +116,23 @@ recipes:
         - '[][I][I]'
         - '[][F][I]'
         - '[][][]'
-    entityBlacklist:
-      - ITEM_FRAME
-      - ARMOR_STAND
+    entity:
+      listType: 'BLACKLIST' # options are BLACKLIST and WHITELIST
+      list:
+        - 'ITEM_FRAME'
+        - 'ARMOR_STAND'
+    material:
+      listType: 'BLACKLIST' # options are BLACKLIST and WHITELIST
+      list:
+        - 'WATER'
+        - 'AIR'
   4:
     enabled: true
+    id: 'gold_hook'
     name: '&6Gold Grappling Hook'
     lore:
       - '&7Uses left - &a[uses]'
-    customModelData: 140
+    customModelData: 0
     uses: 25
     velocityThrow: 1.0
     velocityPull: 1.0
@@ -118,7 +140,6 @@ recipes:
     fallDamage: false
     slowFall: true
     lineBreak: true
-    airHook: false
     stickyHook: true
     recipe:
       materials:
@@ -128,15 +149,23 @@ recipes:
         - '[][G][G]'
         - '[][F][G]'
         - '[][][]'
-    entityBlacklist:
-      - ITEM_FRAME
-      - ARMOR_STAND
+    entity:
+      listType: 'BLACKLIST' # options are BLACKLIST and WHITELIST
+      list:
+        - 'ITEM_FRAME'
+        - 'ARMOR_STAND'
+    material:
+      listType: 'BLACKLIST' # options are BLACKLIST and WHITELIST
+      list:
+        - 'WATER'
+        - 'AIR'
   5:
     enabled: true
+    id: 'emerald_hook'
     name: '&6Emerald Grappling Hook'
     lore:
       - '&7Uses left - &a[uses]'
-    customModelData: 150
+    customModelData: 0
     uses: 40
     velocityThrow: 1.0
     velocityPull: 1.0
@@ -144,7 +173,6 @@ recipes:
     fallDamage: false
     slowFall: true
     lineBreak: true
-    airHook: false
     stickyHook: true
     recipe:
       materials:
@@ -154,15 +182,23 @@ recipes:
         - '[][E][E]'
         - '[][F][E]'
         - '[][][]'
-    entityBlacklist:
-      - ITEM_FRAME
-      - ARMOR_STAND
+    entity:
+      listType: 'BLACKLIST' # options are BLACKLIST and WHITELIST
+      list:
+        - 'ITEM_FRAME'
+        - 'ARMOR_STAND'
+    material:
+      listType: 'BLACKLIST' # options are BLACKLIST and WHITELIST
+      list:
+        - 'WATER'
+        - 'AIR'
   6:
     enabled: true
+    id: 'diamond_hook'
     name: '&6Diamond Grappling Hook'
     lore:
       - '&7Uses left - &a[uses]'
-    customModelData: 160
+    customModelData: 0
     uses: 100
     velocityThrow: 1.0
     velocityPull: 1.0
@@ -170,7 +206,6 @@ recipes:
     fallDamage: false
     slowFall: true
     lineBreak: true
-    airHook: false
     stickyHook: true
     recipe:
       materials:
@@ -180,6 +215,75 @@ recipes:
         - '[][D][D]'
         - '[][F][D]'
         - '[][][]'
-    entityBlacklist:
-      - ITEM_FRAME
-      - ARMOR_STAND
+    entity:
+      listType: 'BLACKLIST' # options are BLACKLIST and WHITELIST
+      list:
+        - 'ITEM_FRAME'
+        - 'ARMOR_STAND'
+    material:
+      listType: 'BLACKLIST' # options are BLACKLIST and WHITELIST
+      list:
+        - 'WATER'
+        - 'AIR'
+  7:
+    enabled: true
+    id: 'air_hook'
+    name: '&6Air Grappling Hook'
+    lore:
+      - '&7Uses left - &a[uses]'
+    customModelData: 0
+    uses: 10
+    velocityThrow: 1.0
+    velocityPull: 1.0
+    timeBetweenGrapples: 0 # in seconds #
+    fallDamage: false
+    slowFall: false
+    lineBreak: false
+    stickyHook: false
+    recipe:
+      materials:
+        F: 'FISHING_ROD'
+        E: 'FEATHER'
+      shape:
+        - '[][E][E]'
+        - '[][F][E]'
+        - '[][][]'
+    entity:
+      listType: 'WHITELIST' # options are BLACKLIST and WHITELIST
+      list:
+        - ''
+    material:
+      listType: 'WHITELIST' # options are BLACKLIST and WHITELIST
+      list:
+        - 'AIR'
+  8:
+    enabled: true
+    id: 'water_hook'
+    name: '&6Water Grappling Hook'
+    lore:
+      - '&7Uses left - &a[uses]'
+    customModelData: 0
+    uses: 100
+    velocityThrow: 1.0
+    velocityPull: 1.0
+    timeBetweenGrapples: 0 # in seconds #
+    fallDamage: false
+    slowFall: false
+    lineBreak: false
+    stickyHook: false
+    recipe:
+      materials:
+        F: 'FISHING_ROD'
+        B: 'WATER_BUCKET'
+      shape:
+        - '[][B][B]'
+        - '[][F][B]'
+        - '[][][]'
+    entity:
+      listType: 'WHITELIST' # options are BLACKLIST and WHITELIST
+      list:
+        - ''
+    material:
+      listType: 'WHITELIST' # options are BLACKLIST and WHITELIST
+      list:
+        - 'WATER'

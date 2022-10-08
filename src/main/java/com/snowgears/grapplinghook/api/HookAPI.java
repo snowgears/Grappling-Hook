@@ -1,7 +1,9 @@
 package com.snowgears.grapplinghook.api;
 
 import com.snowgears.grapplinghook.GrapplingHook;
+import com.snowgears.grapplinghook.utils.HookSettings;
 import org.bukkit.*;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -50,148 +52,114 @@ public final class HookAPI {
 		return hookItem;
 	}
 
-	public static boolean getHookInHandHasFallDamage(Player player){
-
-		try {
-			ItemMeta im = player.getInventory().getItemInMainHand().getItemMeta();
-			PersistentDataContainer persistentData = im.getPersistentDataContainer();
-
-			int fallDamage = persistentData.get(new NamespacedKey(GrapplingHook.getPlugin(), "fallDamage"), PersistentDataType.INTEGER);
-			return fallDamage > 0;
-		} catch (NullPointerException npe){}
-		return false;
+	public static HookSettings getHookSettingsForHookInHand(Player player){
+		return getHookSettingsForHook(player.getInventory().getItemInMainHand());
 	}
 
-	public static boolean getHookInHandHasSlowFall(Player player){
-
-		try {
-			ItemMeta im = player.getInventory().getItemInMainHand().getItemMeta();
-			PersistentDataContainer persistentData = im.getPersistentDataContainer();
-
-			int slowFall = persistentData.get(new NamespacedKey(GrapplingHook.getPlugin(), "slowFall"), PersistentDataType.INTEGER);
-			return slowFall > 0;
-		} catch (NullPointerException npe){}
-		return false;
-	}
-
-	public static boolean getHookInHandHasLineBreak(Player player){
-
-		try {
-			ItemMeta im = player.getInventory().getItemInMainHand().getItemMeta();
-			PersistentDataContainer persistentData = im.getPersistentDataContainer();
-
-			int lineBreak = persistentData.get(new NamespacedKey(GrapplingHook.getPlugin(), "lineBreak"), PersistentDataType.INTEGER);
-			return lineBreak > 0;
-		} catch (NullPointerException npe){}
-		return false;
-	}
-
-	public static boolean getHookInHandHasAirHook(Player player){
-
-		try {
-			ItemMeta im = player.getInventory().getItemInMainHand().getItemMeta();
-			PersistentDataContainer persistentData = im.getPersistentDataContainer();
-
-			int airHook = persistentData.get(new NamespacedKey(GrapplingHook.getPlugin(), "airHook"), PersistentDataType.INTEGER);
-			return airHook > 0;
-		} catch (NullPointerException npe){}
-		return false;
-	}
-
-	public static boolean getHookInHandHasStickyHook(Player player){
-
-		try {
-			ItemMeta im = player.getInventory().getItemInMainHand().getItemMeta();
-			PersistentDataContainer persistentData = im.getPersistentDataContainer();
-
-			int stickyHook = persistentData.get(new NamespacedKey(GrapplingHook.getPlugin(), "stickyHook"), PersistentDataType.INTEGER);
-			return stickyHook > 0;
-		} catch (NullPointerException npe){}
-		return false;
-	}
-
-	public static double getHookInHandVelocityThrow(Player player){
-
-		try {
-			ItemMeta im = player.getInventory().getItemInMainHand().getItemMeta();
-			PersistentDataContainer persistentData = im.getPersistentDataContainer();
-
-			double velocityThrow = persistentData.get(new NamespacedKey(GrapplingHook.getPlugin(), "velocityThrow"), PersistentDataType.DOUBLE);
-			return velocityThrow;
-		} catch (NullPointerException npe){}
-		return 1.0;
-	}
-
-	public static double getHookInHandVelocityPull(Player player){
-
-		try {
-			ItemMeta im = player.getInventory().getItemInMainHand().getItemMeta();
-			PersistentDataContainer persistentData = im.getPersistentDataContainer();
-
-			double velocityPull = persistentData.get(new NamespacedKey(GrapplingHook.getPlugin(), "velocityPull"), PersistentDataType.DOUBLE);
-			return velocityPull;
-		} catch (NullPointerException npe){}
-		return 1.0;
-	}
-
-	public static int getHookInHandTimeBetweenGrapples(Player player){
-
-		try {
-			ItemMeta im = player.getInventory().getItemInMainHand().getItemMeta();
-			PersistentDataContainer persistentData = im.getPersistentDataContainer();
-
-			int timeBetweenGrapples = persistentData.get(new NamespacedKey(GrapplingHook.getPlugin(), "timeBetweenGrapples"), PersistentDataType.INTEGER);
-			return timeBetweenGrapples;
-		} catch (NullPointerException npe){}
-		return 0;
-	}
-
-	//returns the recipe # of the hook (from the recipes.yml file)
-	public static int getHookRecipeNumber(ItemStack hook){
-
+	public static HookSettings getHookSettingsForHook(ItemStack hook){
 		try {
 			ItemMeta im = hook.getItemMeta();
 			PersistentDataContainer persistentData = im.getPersistentDataContainer();
 
-			int recipeNumber = persistentData.get(new NamespacedKey(GrapplingHook.getPlugin(), "recipe"), PersistentDataType.INTEGER);
-			return recipeNumber;
-		} catch (NullPointerException npe){}
-		return 0;
+			String hookID = persistentData.get(new NamespacedKey(GrapplingHook.getPlugin(), "id"), PersistentDataType.STRING);
+			return GrapplingHook.getPlugin().getGrapplingListener().getHookSettings(hookID);
+		} catch (Exception e) {
+			return null;
+		}
 	}
-	
-//	public static int getUses(ItemStack is) {
-//		ItemMeta im = is.getItemMeta();
-//		String usesLine = im.getLore().get(0);
-//		String uses = usesLine.substring(usesLine.indexOf("a")+1, usesLine.length());
-//
-//		if(isInteger(uses))
-//			return Integer.parseInt(uses);
-//		else
-//			return 0;
-//	}
-	
-	public static boolean playerOnCooldown(Player player) {
-		if(GrapplingHook.getPlugin().getGrapplingListener().noGrapplePlayers.containsKey(player.getUniqueId()))
-			 return true;
-		return false;
-	}
-	
-	public static void removePlayerCooldown(Player player) {
-		if(GrapplingHook.getPlugin().getGrapplingListener().noGrapplePlayers.containsKey(player.getUniqueId()))
-			GrapplingHook.getPlugin().getGrapplingListener().noGrapplePlayers.remove(player.getUniqueId());
-	}
-	
-	public static void addPlayerCooldown(final Player player, int seconds) {
-		if(GrapplingHook.getPlugin().getGrapplingListener().noGrapplePlayers.containsKey(player.getUniqueId()))
-			Bukkit.getServer().getScheduler().cancelTask(GrapplingHook.getPlugin().getGrapplingListener().noGrapplePlayers.get(player.getUniqueId()));
-		
-		int taskId = GrapplingHook.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(GrapplingHook.getPlugin(),new Runnable() {
-			  public void run(){
-				 removePlayerCooldown(player);
-			  }
-	  	}, (seconds*20));
 
-		GrapplingHook.getPlugin().getGrapplingListener().noGrapplePlayers.put(player.getUniqueId(), taskId);
+	public static boolean getHookInHandHasFallDamage(Player player){
+
+		HookSettings hookSettings = getHookSettingsForHookInHand(player);
+		if(hookSettings == null)
+			return false;
+		return hookSettings.isFallDamage();
+	}
+
+	public static boolean getHookInHandHasSlowFall(Player player){
+
+		HookSettings hookSettings = getHookSettingsForHookInHand(player);
+		if(hookSettings == null)
+			return false;
+		return hookSettings.isSlowFall();
+	}
+
+	public static boolean getHookInHandHasLineBreak(Player player){
+
+		HookSettings hookSettings = getHookSettingsForHookInHand(player);
+		if(hookSettings == null)
+			return false;
+		return hookSettings.isLineBreak();
+	}
+
+	public static boolean getHookInHandHasStickyHook(Player player){
+
+		HookSettings hookSettings = getHookSettingsForHookInHand(player);
+		if(hookSettings == null)
+			return false;
+		return hookSettings.isStickyHook();
+	}
+
+	public static double getHookInHandVelocityThrow(Player player){
+
+		HookSettings hookSettings = getHookSettingsForHookInHand(player);
+		if(hookSettings == null)
+			return 0;
+		return hookSettings.getVelocityThrow();
+	}
+
+	public static double getHookInHandVelocityPull(Player player){
+
+		HookSettings hookSettings = getHookSettingsForHookInHand(player);
+		if(hookSettings == null)
+			return 0;
+		return hookSettings.getVelocityPull();
+	}
+
+	public static int getHookInHandTimeBetweenGrapples(Player player){
+
+		HookSettings hookSettings = getHookSettingsForHookInHand(player);
+		if(hookSettings == null)
+			return 0;
+		return hookSettings.getTimeBetweenGrapples();
+	}
+
+	public static boolean canHookEntityType(Player player, EntityType entityType){
+
+		HookSettings hookSettings = getHookSettingsForHookInHand(player);
+		if(hookSettings == null)
+			return false;
+		return hookSettings.canHookEntityType(entityType);
+	}
+
+	public static boolean canHookMaterial(Player player, Material material){
+
+		HookSettings hookSettings = getHookSettingsForHookInHand(player);
+		if(hookSettings == null)
+			return false;
+		return hookSettings.canHookMaterial(material);
+	}
+
+
+	//returns the recipe # of the hook (from the recipes.yml file)
+	public static String getHookID(ItemStack hook){
+
+		HookSettings hookSettings = getHookSettingsForHook(hook);
+		if(hookSettings == null)
+			return null;
+		return hookSettings.getId();
+	}
+	
+	public static boolean isPlayerOnCoolDown(Player player) {
+		return GrapplingHook.getPlugin().getGrapplingListener().isPlayerOnCoolDown(player);
+	}
+	
+	public static void removePlayerCoolDown(Player player) {
+		GrapplingHook.getPlugin().getGrapplingListener().removePlayerCoolDown(player);
+	}
+	
+	public static void addPlayerCoolDown(final Player player, int seconds) {
+		GrapplingHook.getPlugin().getGrapplingListener().addPlayerCoolDown(player, seconds);
 	}
 	
 //	public static void setUses(ItemStack is, int uses) {
