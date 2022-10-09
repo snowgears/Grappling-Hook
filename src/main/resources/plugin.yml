@@ -17,10 +17,10 @@ permissions:
     grapplinghook.pull.items:
         description: Allows player to pull items with the hook
         default: op
-    grapplinghook.craft.#:
-        description: Allows player to craft the grappling hook defined by number in recipes.yml
+    grapplinghook.craft.<id>:
+        description: Allows player to craft the grappling hook defined by the id in recipes.yml
         default: op
-    grapplinghook.command:
+    grapplinghook.operator:
         description: Allows player to use commands for plugin
         default: op
     grapplinghook.player.nopull:
@@ -29,7 +29,3 @@ permissions:
     grapplinghook.player.nocooldown:
         description: Player ignores grapple cooldown
         default: op
-commands:
-   gh:
-      description: GH GIVE gives a grappling hook.
-      usage: /<command>

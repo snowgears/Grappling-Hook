@@ -31,25 +31,12 @@ public final class HookAPI {
 		return false;
 	}
 
-	public static ItemStack createGrapplingHook(int uses) {
-		ItemStack hookItem = new ItemStack(Material.FISHING_ROD);
-		ItemMeta hookItemMeta = hookItem.getItemMeta();
-		hookItemMeta.setDisplayName(ChatColor.GOLD+"Grappling Hook");
+	public static ItemStack createGrapplingHook(String hookID) {
+		HookSettings hookSettings = GrapplingHook.getPlugin().getGrapplingListener().getHookSettings(hookID);
+		if(hookSettings == null)
+			return null;
 
-		List<String> loreList = new ArrayList<>();
-		loreList.add(ChatColor.GRAY+"Uses left - "+ChatColor.GREEN+uses);
-		hookItemMeta.setLore(loreList);
-
-		PersistentDataContainer persistentData = hookItemMeta.getPersistentDataContainer();
-		persistentData.set(new NamespacedKey(GrapplingHook.getPlugin(), "timeBetweenGrapples"), PersistentDataType.INTEGER, 0);
-		persistentData.set(new NamespacedKey(GrapplingHook.getPlugin(), "fallDamage"), PersistentDataType.INTEGER, 0);
-		persistentData.set(new NamespacedKey(GrapplingHook.getPlugin(), "slowFall"), PersistentDataType.INTEGER, 1);
-		persistentData.set(new NamespacedKey(GrapplingHook.getPlugin(), "lineBreak"), PersistentDataType.INTEGER, 1);
-		persistentData.set(new NamespacedKey(GrapplingHook.getPlugin(), "uses"), PersistentDataType.INTEGER, uses);
-
-		hookItem.setItemMeta(hookItemMeta);
-
-		return hookItem;
+		return hookSettings.getHookItem();
 	}
 
 	public static HookSettings getHookSettingsForHookInHand(Player player){

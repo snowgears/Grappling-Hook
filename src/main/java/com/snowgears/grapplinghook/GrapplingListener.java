@@ -22,9 +22,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.UUID;
+import java.util.*;
 
 
 public class GrapplingListener implements Listener{
@@ -111,6 +109,9 @@ public class GrapplingListener implements Listener{
 						return;
 					}
 				}
+			}
+			else{
+				event.setCancelled(true);
 			}
 		}
 	}
@@ -344,7 +345,11 @@ public class GrapplingListener implements Listener{
 			}
         }
         else if(event.getState() == org.bukkit.event.player.PlayerFishEvent.State.CAUGHT_FISH){
-        	event.setCancelled(true);
+			if(HookAPI.canHookMaterial(player, Material.WATER)){
+				PlayerGrappleEvent e = new PlayerGrappleEvent(player, player, event.getHook().getLocation());
+				plugin.getServer().getPluginManager().callEvent(e);
+			}
+			event.setCancelled(true);
         }
         //casting the fishing line out
         else if(event.getState() == PlayerFishEvent.State.FISHING){
@@ -381,8 +386,10 @@ public class GrapplingListener implements Listener{
 			task.runTaskTimer(plugin, 1, 1);
 		}
 		else if(event.getState() == PlayerFishEvent.State.REEL_IN){
-			boolean canHookAir = HookAPI.canHookMaterial(player, Material.AIR);
-			if(canHookAir){
+
+			Block block = event.getHook().getLocation().clone().add(0, -0.1, 0).getBlock();
+
+			if (HookAPI.canHookMaterial(player, block.getType())) {
 				if(plugin.usePerms() == false || player.hasPermission("grapplinghook.pull.self")){
 					PlayerGrappleEvent e = new PlayerGrappleEvent(player, player, event.getHook().getLocation());
 					plugin.getServer().getPluginManager().callEvent(e);
@@ -548,5 +555,14 @@ public class GrapplingListener implements Listener{
 
 	public void addHookSettings(String id, HookSettings hookSettings){
 		this.hookSettings.put(id, hookSettings);
+	}
+
+	public List<String> getHookIDs(){
+		ArrayList<String> hookIDs = new ArrayList<>();
+		for(String id : hookSettings.keySet()){
+			hookIDs.add(id);
+		}
+		Collections.sort(hookIDs);
+		return hookIDs;
 	}
 }

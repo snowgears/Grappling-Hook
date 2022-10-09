@@ -2,6 +2,7 @@ package com.snowgears.grapplinghook.utils;
 
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +21,8 @@ public class HookSettings {
     private boolean lineBreak;
     private boolean stickyHook;
     private int customModelData;
+
+    private ItemStack hookItem;
 
     private HashMap<EntityType, Boolean> entityTypes = new HashMap<>();
     private HashMap<Material, Boolean> materials = new HashMap<>();
@@ -81,6 +84,14 @@ public class HookSettings {
                 this.materials.put(material, true);
             }
         }
+    }
+
+    public ItemStack getHookItem() {
+        return hookItem;
+    }
+
+    public void setHookItem(ItemStack hookItem) {
+        this.hookItem = hookItem;
     }
 
     public String getId() {

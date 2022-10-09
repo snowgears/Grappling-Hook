@@ -13,6 +13,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
 import java.util.*;
+import java.util.logging.Level;
 
 public class RecipeLoader {
 
@@ -30,13 +31,14 @@ public class RecipeLoader {
         int loadedCount = 0;
         YamlConfiguration config = YamlConfiguration.loadConfiguration(recipesFile);
         if (config.getConfigurationSection("recipes") == null) {
-            System.out.println("[GrapplingHook] [ERROR] Recipes file could not be loaded.");
+            plugin.getLogger().log(Level.SEVERE, "Recipes file could not be loaded.");
             return;
         }
 
         Set<String> allRecipeNumbers = config.getConfigurationSection("recipes").getKeys(false);
 
         for (String recipeNumber : allRecipeNumbers) {
+            System.out.println("[GrapplingHook] Recipe loading - "+recipeNumber);
             boolean enabled = config.getBoolean("recipes." + recipeNumber + ".enabled");
             if (enabled) {
                 String id = config.getString("recipes." + recipeNumber + ".id");
@@ -70,7 +72,7 @@ public class RecipeLoader {
                             if(!entityTypeString.isEmpty())
                                 entityTypeList.add(EntityType.valueOf(entityTypeString));
                         } catch (IllegalArgumentException e){
-                            System.out.println("[GrapplingHook] ERROR: unrecognized entity type in recipe "+recipeNumber+": "+entityTypeString);
+                            plugin.getLogger().log(Level.WARNING, "unrecognized entity type in recipe "+recipeNumber+": "+entityTypeString);
                         }
                     }
 
@@ -92,7 +94,7 @@ public class RecipeLoader {
                             if(!materialString.isEmpty())
                                 materialList.add(Material.valueOf(materialString));
                         } catch (IllegalArgumentException e){
-                            System.out.println("[GrapplingHook] ERROR: unrecognized material in recipe "+recipeNumber+": "+materialString);
+                            plugin.getLogger().log(Level.WARNING, "unrecognized material in recipe "+recipeNumber+": "+materialString);
                         }
                     }
 
@@ -102,9 +104,6 @@ public class RecipeLoader {
                 } catch (NullPointerException e){
                     hookSettings.setMaterialList(true, new ArrayList<>());
                 }
-
-                //register the hook setting in map
-                plugin.getGrapplingListener().addHookSettings(id, hookSettings);
 
                 ItemStack hookItem = new ItemStack(Material.FISHING_ROD);
                 ItemMeta hookItemMeta = hookItem.getItemMeta();
@@ -126,7 +125,11 @@ public class RecipeLoader {
 
                 hookItem.setItemMeta(hookItemMeta);
 
-                NamespacedKey key = new NamespacedKey(plugin, "hook_item_" + recipeNumber);
+                hookSettings.setHookItem(hookItem);
+                //register the hook setting in map
+                plugin.getGrapplingListener().addHookSettings(id, hookSettings);
+
+                NamespacedKey key = new NamespacedKey(plugin, "hook_item_" + id);
                 ShapedRecipe recipe = new ShapedRecipe(key, hookItem);
 
                 HashMap<String, Material> materialMap = new HashMap<>();
@@ -136,10 +139,9 @@ public class RecipeLoader {
                         Material material = Material.valueOf(config.getString("recipes." + recipeNumber + ".recipe.materials." + materialKey));
                         materialMap.put(materialKey, material);
                     } catch (IllegalArgumentException iae) {
-                        System.out.println("[GrapplingHook] ERROR READING MATERIAL VALUE IN RECIPES.YML FILE");
-                        iae.printStackTrace();
+                        plugin.getLogger().log(Level.WARNING, "ERROR READING MATERIAL VALUE IN RECIPES.YML FILE");
                     } catch (NullPointerException npe) {
-                        System.out.println("[GrapplingHook] NULL ERROR READING MATERIAL VALUE IN RECIPES.YML FILE");
+                        plugin.getLogger().log(Level.WARNING, "NULL ERROR READING MATERIAL VALUE IN RECIPES.YML FILE");
                     }
                 }
 
@@ -186,7 +188,16 @@ public class RecipeLoader {
                 loadedCount++;
             }
         }
-        System.out.println("[GrapplingHook] Loaded "+loadedCount+" recipes.");
+
+        plugin.getLogger().log(Level.INFO, "Loaded "+loadedCount+" recipes.");
+    }
+
+    public void unloadRecipes(){
+        NamespacedKey key;
+        for(String hookID : plugin.getGrapplingListener().getHookIDs()){
+            key = new NamespacedKey(plugin, "hook_item_" + hookID);
+            Bukkit.removeRecipe(key);
+        }
     }
 
     private String formatString(String unformattedString, int uses){
