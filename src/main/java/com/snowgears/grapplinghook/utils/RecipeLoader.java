@@ -38,7 +38,6 @@ public class RecipeLoader {
         Set<String> allRecipeNumbers = config.getConfigurationSection("recipes").getKeys(false);
 
         for (String recipeNumber : allRecipeNumbers) {
-            System.out.println("[GrapplingHook] Recipe loading - "+recipeNumber);
             boolean enabled = config.getBoolean("recipes." + recipeNumber + ".enabled");
             if (enabled) {
                 String id = config.getString("recipes." + recipeNumber + ".id");
@@ -155,25 +154,51 @@ public class RecipeLoader {
                         if (splitRecipeLinePart.contains("]")) {
                             String letter = splitRecipeLinePart.replaceAll("]", "");
                             if (letter.isEmpty())
-                                letter = "";
+                                letter = "_";
                             threeLetters += letter;
                         }
                     }
                     threeLettersArray[i] = threeLetters;
-              //      System.out.println("["+threeLettersArray[i]+"]");
                 }
 
-                if(threeLettersArray[0].isEmpty()){
-                    recipe.shape(threeLettersArray[1], threeLettersArray[2]);
+                if(threeLettersArray[0].startsWith("_") && threeLettersArray[1].startsWith("_") && threeLettersArray[2].startsWith("_")){
+                    threeLettersArray[0] = threeLettersArray[0].substring(1);
+                    threeLettersArray[1] = threeLettersArray[1].substring(1);
+                    threeLettersArray[2] = threeLettersArray[2].substring(1);
                 }
-                else if(threeLettersArray[2].isEmpty()){
+                if(threeLettersArray[0].endsWith("_") && threeLettersArray[1].endsWith("_") && threeLettersArray[2].endsWith("_")){
+                    threeLettersArray[0] = threeLettersArray[0].substring(0, threeLettersArray[0].length()-1);
+                    threeLettersArray[1] = threeLettersArray[0].substring(0, threeLettersArray[1].length()-1);
+                    threeLettersArray[2] = threeLettersArray[0].substring(0, threeLettersArray[2].length()-1);
+                }
+
+
+
+                if(onlyContainsUnderscores(threeLettersArray[0])){
+                    recipe.shape(threeLettersArray[1], threeLettersArray[2]);
+                    if(threeLettersArray[1].contains("_") || threeLettersArray[2].contains("_")) {
+                        materialMap.put("_", Material.AIR);
+                    }
+                }
+                else if(onlyContainsUnderscores(threeLettersArray[2])){
                     recipe.shape(threeLettersArray[0], threeLettersArray[1]);
+                    if(threeLettersArray[0].contains("_") || threeLettersArray[1].contains("_")) {
+                        materialMap.put("_", Material.AIR);
+                    }
                 }
                 else {
-                    recipe.shape(threeLettersArray[0], threeLettersArray[1], threeLettersArray[2]);
+                    try {
+                        recipe.shape(threeLettersArray[0], threeLettersArray[1], threeLettersArray[2]);
+
+                        if(threeLettersArray[0].contains("_") || (threeLettersArray[1].contains("_") || threeLettersArray[2].contains("_"))) {
+                            materialMap.put("_", Material.AIR);
+                        }
+
+                    } catch (IllegalArgumentException e){
+                        plugin.getLogger().log(Level.WARNING, "Problem with shaping recipe "+recipeNumber);
+                    }
                 }
                 //System.out.println(threeLettersArray[0] + ", "+ threeLettersArray[1] + ", "+threeLettersArray[2]);
-
                 //recipe.shape("1 1")
 
                 for (Map.Entry<String, Material> entry : materialMap.entrySet()) {
@@ -181,7 +206,11 @@ public class RecipeLoader {
                         recipe.setIngredient(entry.getKey().charAt(0), new RecipeChoice.MaterialChoice(Tag.PLANKS));
                     }
                     else {
-                        recipe.setIngredient(entry.getKey().charAt(0), entry.getValue());
+                        try {
+                            recipe.setIngredient(entry.getKey().charAt(0), entry.getValue());
+                        } catch (IllegalArgumentException e){
+                            plugin.getLogger().log(Level.WARNING, "Problem with setting ingredient in recipe "+recipeNumber);
+                        }
                     }
                 }
                 Bukkit.addRecipe(recipe);
@@ -190,6 +219,16 @@ public class RecipeLoader {
         }
 
         plugin.getLogger().log(Level.INFO, "Loaded "+loadedCount+" recipes.");
+    }
+
+    private boolean onlyContainsUnderscores(String s){
+        for (int i =0; i< s.length(); i++){
+            char c = s.charAt(i);
+            if(c != '_'){
+                return false;
+            }
+        }
+        return true;
     }
 
     public void unloadRecipes(){
